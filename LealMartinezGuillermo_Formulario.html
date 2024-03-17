@@ -1,0 +1,143 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Formulario Guillermo Leal</title>
+    <style>
+        body {
+            font-family: Verdana, Geneva, Tahoma, sans-serif;
+            padding: 10px;  
+
+        }
+        h1 {
+            color: blue;
+            font-family: Verdana, Geneva, Tahoma, sans-serif;
+        }
+        .texto {
+            width: 600px;
+        }
+        #boton {
+            background-color: blue;
+            color: white;
+            padding: 5px;
+        }
+    </style>
+</head>
+<body>
+    <h1>Formulario</h1>
+    <form action="" id="miFormulario">
+        <p>
+            <label for="nombre">Nombre:</label>
+            <input type="text" name="nombre" id="nombre" placeholder="Ingrese su nombre" class="texto">
+        </p>
+        <p>
+            <label for="apellidos">Apellidos:</label>
+            <input type="text" name="apellidos" id="apellidos" placeholder="Ingrese sus apellidos" class="texto">
+        </p>
+        <p>
+            <label for="edad">Edad:</label>
+            <input type="text" name="edad" id="edad" placeholder="Ingrese su edad" class="texto">
+        </p>
+        <p>
+            <label for="sexo">Sexo:</label>
+            <input type="radio" name="sexo" id="masculino" value="masculino">
+            <label for="masculino">Masculino</label>
+            <input type="radio" name="sexo" id="femenino" value="femenino">
+            <label for="femenino">Femenino</label>
+        </p>
+        <p>
+            <label for="situacionfamiliar">Situación familiar:</label>
+                <select name="situacionfamiliar" id="situacionfamiliar" >
+                    <option value="" disabled selected>Seleccione una opción</option>
+                    <option value="Soltero">Soltero</option>
+                    <option value="Casado">Casado</option>
+                    <option value="Divorciado">Divorciado</option>
+                    <option value="Viudo">Viudo</option>
+                </select>
+        </p>
+        <p>
+            <label for="email">Email:</label>
+            <input type="text" name="email" id="email" placeholder="Ingrese su correo electrónico" class="texto">
+        </p>
+        <p>
+            <label for="tlf">Telefóno:</label>
+            <input type="text" name="tlf" id="tlf" placeholder="Ingrese su número de teléfono" class="texto">
+        </p>
+        <p>
+            <input type="submit" name="enviar" id="boton" value="Enviar" onclick="validarFormulario()">
+        </p>
+    <script>
+       function validarEdad() {
+            let edad = document.getElementById("edad").value;
+            if (edad < 18) {
+                return false;
+            }
+            return true;
+        }
+        function validarEmail() {
+            let email = document.getElementById("email").value;
+            let expresion = /^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\.[cC][oO][mM]$/;
+            if (!expresion.test(email)) {
+                return false;
+            }
+            return true;
+        }
+        function validarTlf() {
+            let tlf = document.getElementById("tlf").value;
+            let expresion = /^\{0-9 }$/;
+            if (!expresion.test(tlf)) {
+                return false;
+            }
+            return true;
+        }
+        function PrimeraLetra(texto) {
+            return texto.charAt(0).toUpperCase() + texto.slice(1).toLowerCase();
+        }
+        function actualizarSituacionFamiliar() {
+                    let sexo = document.querySelector('input[name="sexo"]:checked').value;
+                    let situacionFamiliar = document.getElementById('situacionfamiliar');
+                    situacionFamiliar.innerHTML = '';
+
+                    var opciones = ['Soltero', 'Casado', 'Divorciado', 'Viudo'];
+                    if (sexo === 'femenino') {
+                        opciones = ['Soltera', 'Casada', 'Divorciada', 'Viuda'];
+                    }
+                    for (var i = 0; i < opciones.length; i++) {
+                        var opcion = opciones[i];
+                        var elemento = document.createElement('option');
+                        elemento.textContent = opcion;
+                        elemento.value = opcion;
+                        situacionFamiliar.appendChild(elemento);
+                    }
+                }
+
+                document.getElementById('masculino').addEventListener('change', actualizarSituacionFamiliar);
+                document.getElementById('femenino').addEventListener('change', actualizarSituacionFamiliar);
+
+                function validarFormulario(event) {
+                errores = ""; 
+
+                let esEdadValida = validarEdad();
+                if (esEdadValida == false) errores += "La edad no es válida. Debes tener al menos 18 años";
+
+                let esEmailValido = validarEmail();
+                if (esEmailValido == false) errores += "El email no es válido";
+
+                let esTlfValido = validarTlf();
+                if (esTlfValido == false) errores += "El teléfono no es válido";
+
+                if (errores.length > 0) {
+                    document.getElementById("errores").innerHTML = errores;
+                } else {
+                    let nombre = document.getElementById("nombre");
+                    nombre.value = PrimeraLetra(nombre.value);
+
+                    let apellidos = document.getElementById("apellidos");
+                    apellidos.value = PrimeraLetra(apellidos.value);
+                }
+            }
+        document.getElementById("miFormulario").addEventListener("submit", validarFormulario); // Como si fuera un onclick
+    </script>
+</body>
+</html>
